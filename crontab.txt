@@ -1,0 +1,2 @@
+*/4 * * * * /usr/bin/python /home/pi/scripts/allowance.py
+2-58/4 * * * * /usr/bin/python /home/pi/scripts/weather.py
