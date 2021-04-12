@@ -26,6 +26,8 @@ draw = ImageDraw.Draw(img)
 
 # Query Dark Sky (https://darksky.net/) to scrape current weather data
 # Arlington, MA
+
+
 def get_weather():
     weather = {}
     res = requests.get("https://darksky.net/forecast/42.4119,-71.1473/us12/en")
@@ -35,11 +37,14 @@ def get_weather():
         curr = soup.find_all("span", "currently")
 
         weather["currently"] = curr[0].text.strip()
-        weather["temperature"] = int(curr[0].find("span", "summary").text.split()[0][:-1])
-        weather["currently_summary"] = soup.find('span', 'currently__summary').text.strip()
+        weather["temperature"] = int(curr[0].find(
+            "span", "summary").text.split()[0][:-1])
+        weather["currently_summary"] = soup.find(
+            'span', 'currently__summary').text.strip()
         return weather
     else:
         return weather
+
 
 weather = get_weather()
 
@@ -48,12 +53,11 @@ fontTitle = ImageFont.truetype(SourceSansProSemibold, 16)
 fontText = ImageFont.truetype(SourceSansProSemibold, 16)
 
 
-
 # Write text with weather values to the canvas
 datetime = time.strftime("%B %d, %I:%M %p")
-draw.text((10, 5), datetime, inky_display.RED, font=fontTitle)
-draw.text((10, 25), weather["currently"] + ". " + weather["currently_summary"], inky_display.BLACK, font=fontText)
+draw.text((10, 5), datetime, inky_display.BLACK, font=fontTitle)
+draw.text((10, 25), weather["currently"] + ". " +
+          weather["currently_summary"], inky_display.BLACK, font=fontText)
 
 inky_display.set_image(img)
 inky_display.show()
-
