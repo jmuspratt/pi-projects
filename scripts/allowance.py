@@ -4,6 +4,9 @@
 import locale
 import time
 import config
+# https://pyairtable.readthedocs.io/en/latest/getting-started.html
+from pyairtable import Table
+
 debug = False
 
 if not debug:
@@ -11,6 +14,7 @@ if not debug:
     from PIL import Image, ImageDraw, ImageFont
     from font_fredoka_one import FredokaOne
     from font_source_sans_pro import SourceSansProSemibold
+
 
 try:
     import requests
@@ -20,9 +24,13 @@ except ImportError:
 # Config
 locale.setlocale(locale.LC_ALL, '')
 
+# Recursive function
 
-elizaEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Eliza%20Transactions?maxRecords=100&view=Grid%20view'
-willEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Will%20Transactions?maxRecords=100&view=Grid%20view'
+table = Table(api_key, 'base_id', 'table_name')
+
+
+elizaEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Eliza%20Transactions?maxRecords=1000&view=Grid%20view&offset=0'
+willEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Will%20Transactions?maxRecords=1000&view=Grid%20view&offset=0'
 
 elizaResponse = requests.get(elizaEndpoint, headers={
                              'Authorization': 'Bearer ' + config.AIRTABLE_API_KEY})
