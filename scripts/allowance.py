@@ -7,7 +7,7 @@ import config
 # https://pyairtable.readthedocs.io/en/latest/getting-started.html
 from pyairtable import Table
 
-debug = False
+debug = True
 
 if not debug:
     from inky import InkyPHAT
@@ -24,21 +24,12 @@ except ImportError:
 # Config
 locale.setlocale(locale.LC_ALL, '')
 
-# Recursive function
+# Fetch records
+elizaTable = Table(config.AIRTABLE_API_KEY, config.AIRTABLE_BASE, 'Eliza Transactions')
+willTable = Table(config.AIRTABLE_API_KEY, config.AIRTABLE_BASE, 'Will Transactions')
 
-table = Table(api_key, 'base_id', 'table_name')
-
-
-elizaEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Eliza%20Transactions?maxRecords=1000&view=Grid%20view&offset=0'
-willEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Will%20Transactions?maxRecords=1000&view=Grid%20view&offset=0'
-
-elizaResponse = requests.get(elizaEndpoint, headers={
-                             'Authorization': 'Bearer ' + config.AIRTABLE_API_KEY})
-willResponse = requests.get(willEndpoint, headers={
-                            'Authorization': 'Bearer ' + config.AIRTABLE_API_KEY})
-
-elizaRecords = elizaResponse.json()['records']
-willRecords = willResponse.json()['records']
+elizaRecords = elizaTable.all()
+willRecords = willTable.all()
 
 elizaSum = 0
 for transaction in elizaRecords:
