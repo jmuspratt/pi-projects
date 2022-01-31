@@ -7,19 +7,13 @@ import config
 # https://pyairtable.readthedocs.io/en/latest/getting-started.html
 from pyairtable import Table
 
-debug = True
+debug = False
 
 if not debug:
     from inky import InkyPHAT
     from PIL import Image, ImageDraw, ImageFont
     from font_fredoka_one import FredokaOne
     from font_source_sans_pro import SourceSansProSemibold
-
-
-try:
-    import requests
-except ImportError:
-    exit("This script requires the requests module\nInstall with: sudo pip install requests")
 
 # Config
 locale.setlocale(locale.LC_ALL, '')
