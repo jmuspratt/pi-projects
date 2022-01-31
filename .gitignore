@@ -1,2 +1,4 @@
+.DS_Store
 scripts/config.py
+scripts/config.pyc
 scripts/__pycache__

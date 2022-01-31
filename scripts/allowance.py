@@ -4,6 +4,9 @@
 import locale
 import time
 import config
+# https://pyairtable.readthedocs.io/en/latest/getting-started.html
+from pyairtable import Table
+
 debug = False
 
 if not debug:
@@ -12,25 +15,15 @@ if not debug:
     from font_fredoka_one import FredokaOne
     from font_source_sans_pro import SourceSansProSemibold
 
-try:
-    import requests
-except ImportError:
-    exit("This script requires the requests module\nInstall with: sudo pip install requests")
-
 # Config
 locale.setlocale(locale.LC_ALL, '')
 
+# Fetch records
+elizaTable = Table(config.AIRTABLE_API_KEY, config.AIRTABLE_BASE, 'Eliza Transactions')
+willTable = Table(config.AIRTABLE_API_KEY, config.AIRTABLE_BASE, 'Will Transactions')
 
-elizaEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Eliza%20Transactions?maxRecords=100&view=Grid%20view'
-willEndpoint = 'https://api.airtable.com/v0/appGttbRiDa3ik9mf/Will%20Transactions?maxRecords=100&view=Grid%20view'
-
-elizaResponse = requests.get(elizaEndpoint, headers={
-                             'Authorization': 'Bearer ' + config.AIRTABLE_API_KEY})
-willResponse = requests.get(willEndpoint, headers={
-                            'Authorization': 'Bearer ' + config.AIRTABLE_API_KEY})
-
-elizaRecords = elizaResponse.json()['records']
-willRecords = willResponse.json()['records']
+elizaRecords = elizaTable.all()
+willRecords = willTable.all()
 
 elizaSum = 0
 for transaction in elizaRecords:
